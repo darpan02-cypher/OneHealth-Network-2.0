@@ -2,96 +2,274 @@
 {% load static %}
 
 {% block content %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-<div class="container-fluid px-4 py-4" style="background-color: #f3f6fa; min-height: 100vh;">
+<div class="container-fluid">
     <div class="row">
-        <!-- Sidebar -->
-        <div class="col-md-3 mb-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-info text-white">
-                    <h5 class="mb-0"><i class="fas fa-user-circle me-2"></i>Patient Portal</h5>
+        <!-- Sidebar Navigation -->
+        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <div class="sidebar-header text-center mb-4">
+                    <h4>Patient Portal</h4>
                 </div>
-                <div class="list-group list-group-flush">
-                    <a href="{% url 'patient_health_profile' %}" class="list-group-item list-group-item-action">
-                        <i class="fas fa-user me-2 text-primary"></i>Health Profile
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <i class="fas fa-calendar-check me-2 text-success"></i>Appointments
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <i class="fas fa-notes-medical me-2 text-danger"></i>Medical Records
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <i class="fas fa-pills me-2 text-warning"></i>Prescriptions
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <i class="fas fa-file-invoice-dollar me-2 text-secondary"></i>Billing
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <i class="fas fa-envelope me-2 text-primary"></i>Messages
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <i class="fas fa-tachometer-alt me-2 text-primary"></i>Dashboard
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="col-md-9">
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header bg-info text-white d-flex align-items-center">
-                    <i class="fas fa-user-md me-2"></i>
-                    <h5 class="mb-0">Hey, Welcome!</h5>
-                </div>
-                <div class="card-body">
-                    <!-- Alert Message -->
-                    {% if not health_profile_created %}
-                    <div class="alert alert-warning text-center py-4" role="alert">
-                        <p class="mb-3 fs-5">You need to create a health profile to access all features.</p>
-                        <a href="{% url 'health_profile_view' %}" class="btn btn-primary btn-lg">
-                            <i class="fas fa-user-plus me-2"></i>Create Health Profile
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'patient_dashboard' %}">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        {% if health_profile_created %}
+                        <a class="nav-link" href="{% url 'patient_health_profile' %}">
+                            <i class="fas fa-user-circle me-2"></i>Health Profile
+                        </a>
+                        {% else %}
+                        <a class="nav-link" href="{% url 'patient_health_profile' %}">
+                            <i class="fas fa-plus-circle me-2"></i>Create Profile
+                        </a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-calendar-check me-2"></i>Appointments
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-prescription me-2"></i>Prescriptions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-file-medical me-2"></i>Medical Records
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-file-invoice-dollar me-2"></i>Billing
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-comment-medical me-2"></i>Messages
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-footer mt-4 pt-3 border-top">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-cog me-2"></i>Settings
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Patient Dashboard</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group me-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
                     </div>
-                    {% endif %}
-                    
-                    <p class="lead text-muted mt-4">Manage appointments, view records, and access your health info below.</p>
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <div class="card border-0 shadow-sm h-100 text-center">
-                                <div class="card-body">
-                                    <i class="fas fa-calendar-alt fa-3x mb-3 text-success"></i>
-                                    <h6 class="card-title">Upcoming Appointments</h6>
-                                    <p class="card-text">View and manage your scheduled visits.</p>
-                                    <a href="#" class="btn btn-outline-success btn-sm">View Appointments</a>
-                                </div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                        <span data-feather="calendar"></span>
+                        This week
+                    </button>
+                </div>
+            </div>
+
+            <!-- Health Profile Status Card -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-heartbeat me-2"></i>Health Profile Status</h5>
+                                <span class="badge bg-light text-dark">
+                                    {% if health_profile_created %}Complete{% else %}Incomplete{% endif %}
+                                </span>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card border-0 shadow-sm h-100 text-center">
-                                <div class="card-body">
-                                    <i class="fas fa-file-medical fa-3x mb-3 text-danger"></i>
-                                    <h6 class="card-title">Medical Records</h6>
-                                    <p class="card-text">Access your history and health reports.</p>
-                                    <a href="#" class="btn btn-outline-danger btn-sm">View Records</a>
+                        <div class="card-body text-center py-4">
+                            {% if health_profile_created %}
+                                <i class="fas fa-check-circle text-success mb-3" style="font-size: 3rem;"></i>
+                                <h4 class="card-title">Profile Complete</h4>
+                                <p class="card-text">Your health profile is up to date.</p>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                    <a href="{% url 'patient_health_profile' %}" class="btn btn-primary me-md-2">
+                                        <i class="fas fa-eye me-1"></i> View Profile
+                                    </a>
+                                    <a href="{% url 'patient_health_profile' %}" class="btn btn-outline-primary">
+                                        <i class="fas fa-edit me-1"></i> Update
+                                    </a>
                                 </div>
+                            {% else %}
+                                <i class="fas fa-exclamation-circle text-warning mb-3" style="font-size: 3rem;"></i>
+                                <h4 class="card-title">Profile Needed</h4>
+                                <p class="card-text">Complete your health profile to access all features.</p>
+                                <a href="{% url 'patient_health_profile' %}" class="btn btn-primary btn-lg px-4">
+                                    <i class="fas fa-plus me-1"></i> Create Profile
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer bg-light">
+                            <small class="text-muted">Last updated: {% if health_profile_created %}Recently{% else %}Never{% endif %}</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Appointments Card -->
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Upcoming Appointments</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if appointments %}
+                            <div class="list-group list-group-flush">
+                                {% for appointment in appointments %}
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">{{ appointment.doctor }}</h6>
+                                        <small>{{ appointment.date|date:"M d, Y" }}</small>
+                                    </div>
+                                    <p class="mb-1">{{ appointment.purpose }}</p>
+                                    <small class="text-muted">{{ appointment.time|time:"g:i A" }}</small>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-calendar-times text-muted mb-3" style="font-size: 2rem;"></i>
+                                <p>No upcoming appointments</p>
+                                <a href="#" class="btn btn-sm btn-outline-info">Schedule Appointment</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer bg-light">
+                            <a href="#" class="btn btn-sm btn-outline-info float-end">View All</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity Section -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0"><i class="fas fa-history me-2"></i>Recent Activity</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Activity</th>
+                                            <th>Details</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Today</td>
+                                            <td>Prescription Refill</td>
+                                            <td>Ibuprofen 200mg</td>
+                                            <td><span class="badge bg-success">Completed</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Yesterday</td>
+                                            <td>Lab Results</td>
+                                            <td>Blood Test</td>
+                                            <td><span class="badge bg-info">Available</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>May 12</td>
+                                            <td>Doctor Visit</td>
+                                            <td>Annual Checkup</td>
+                                            <td><span class="badge bg-warning">Pending Review</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card border-0 shadow-sm h-100 text-center">
-                                <div class="card-body">
-                                    <i class="fas fa-prescription-bottle-alt fa-3x mb-3 text-warning"></i>
-                                    <h6 class="card-title">Prescriptions</h6>
-                                    <p class="card-text">Manage and refill your prescriptions.</p>
-                                    <a href="#" class="btn btn-outline-warning btn-sm">View Prescriptions</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-3 mb-3">
+                                    <a href="#" class="btn btn-outline-primary btn-lg p-3 w-100">
+                                        <i class="fas fa-video fa-2x mb-2"></i><br>
+                                        Start Telehealth
+                                    </a>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <a href="#" class="btn btn-outline-success btn-lg p-3 w-100">
+                                        <i class="fas fa-prescription-bottle-alt fa-2x mb-2"></i><br>
+                                        Request Refill
+                                    </a>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <a href="#" class="btn btn-outline-info btn-lg p-3 w-100">
+                                        <i class="fas fa-file-medical fa-2x mb-2"></i><br>
+                                        View Records
+                                    </a>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <a href="#" class="btn btn-outline-warning btn-lg p-3 w-100">
+                                        <i class="fas fa-comment-medical fa-2x mb-2"></i><br>
+                                        Message Doctor
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-     </div>
+        </main>
+    </div>
 </div>
+
+<!-- Dashboard-specific JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Activate tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+
+    // Sidebar toggle functionality
+    document.getElementById('sidebarToggle').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.toggle('active');
+    });
+
+    // Health profile completion indicator
+    const profileCompletion = document.querySelector('.profile-completion');
+    if (profileCompletion) {
+        const progress = profileCompletion.querySelector('.progress-bar');
+        progress.style.width = "{% if health_profile_created %}100{% else %}30{% endif %}%";
+        progress.setAttribute('aria-valuenow', "{% if health_profile_created %}100{% else %}30{% endif %}");
+    }
+});
+</script>
 {% endblock %}
