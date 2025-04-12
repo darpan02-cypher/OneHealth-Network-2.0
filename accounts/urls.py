@@ -18,6 +18,13 @@ urlpatterns = [
     path('dashboard/patient/', views.patient_dashboard, name='patient_dashboard'),
     path('dashboard/doctor/', views.doctor_dashboard, name='doctor_dashboard'),
     path('dashboard/insurance/', views.insurance_dashboard, name='insurance_dashboard'),
+    
+    
+    #patient's dashboard fields
+    #patients Health Profile
+    path('dashboard/patient/health_profile/', views.patient_health_profile, name='patient_health_profile'),
+    
+    
 
     # Logout URL
     path('logout/', LogoutView.as_view(next_page='index'), name='logout'),

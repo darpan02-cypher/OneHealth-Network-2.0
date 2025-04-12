@@ -157,3 +157,8 @@ def login_view(request):  # Renamed from `login` to `login_view`
 def logout(request):
     return render(request, 'logout.html')
 
+
+def patient_health_profile(request):
+    return render(request, 'patient/health_profile.html')
+    
+
