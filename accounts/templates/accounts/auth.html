@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if register %}Register{% else %}Login{% endif %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h2>{% if register %}Register{% else %}Login{% endif %}</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {% if register %}
+            <input type="text" name="name" placeholder="Name" required><br>
+            <input type="email" name="email" placeholder="Email" required><br>
+            <input type="password" name="password" placeholder="Password" required><br>
+            <select name="role" required>
+                <option value="patient">Patient</option>
+                <option value="doctor">Doctor</option>
+                <option value="insurance">Insurance Provider</option>
+            </select><br>
+        {% else %}
+            <input type="email" name="email" placeholder="Email" required><br>
+            <input type="password" name="password" placeholder="Password" required><br>
+        {% endif %}
+        <button type="submit">{% if register %}Register{% else %}Login{% endif %}</button>
+    </form>
+</body>
+</html>

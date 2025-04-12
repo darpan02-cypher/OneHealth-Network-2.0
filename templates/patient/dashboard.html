@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<div class="container-fluid px-4 py-4" style="background-color: #f3f6fa; min-height: 100vh;">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-user-circle me-2"></i>Patient Portal</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-user me-2 text-primary"></i>Health Profile
+                    </a>
+                
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-calendar-check me-2 text-success"></i>Appointments
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-notes-medical me-2 text-danger"></i>Medical Records
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-pills me-2 text-warning"></i>Prescriptions
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-file-invoice-dollar me-2 text-secondary"></i>Billing
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-envelope me-2 text-primary"></i>Messages
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-tachometer-alt me-2 text-primary"></i>Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-info text-white d-flex align-items-center">
+                    <i class="fas fa-user-md me-2"></i>
+                    <h5 class="mb-0">Hey, Welcome!</h5>
+                </div>
+                <div class="card-body">
+                    <p class="lead text-muted">Manage appointments, view records, and access your health info below.</p>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm h-100 text-center">
+                                <div class="card-body">
+                                    <i class="fas fa-calendar-alt fa-3x mb-3 text-success"></i>
+                                    <h6 class="card-title">Upcoming Appointments</h6>
+                                    <p class="card-text">View and manage your scheduled visits.</p>
+                                    <a href="#" class="btn btn-outline-success btn-sm">View Appointments</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm h-100 text-center">
+                                <div class="card-body">
+                                    <i class="fas fa-file-medical fa-3x mb-3 text-danger"></i>
+                                    <h6 class="card-title">Medical Records</h6>
+                                    <p class="card-text">Access your history and health reports.</p>
+                                    <a href="#" class="btn btn-outline-danger btn-sm">View Records</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm h-100 text-center">
+                                <div class="card-body">
+                                    <i class="fas fa-prescription-bottle-alt fa-3x mb-3 text-warning"></i>
+                                    <h6 class="card-title">Prescriptions</h6>
+                                    <p class="card-text">Manage and refill your prescriptions.</p>
+                                    <a href="#" class="btn btn-outline-warning btn-sm">View Prescriptions</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+</div>
+{% endblock %}

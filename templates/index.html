@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>OneHealth Network</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #204080, #2e60a3);
+            color: white;
+            min-height: 100vh;
+        }
+        .navbar-brand img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        .hero {
+            padding: 100px 20px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+        .hero p {
+            font-size: 1.3rem;
+            margin-top: 10px;
+        }
+        .role-buttons .btn {
+            margin: 10px;
+            min-width: 200px;
+        }
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+    <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="{% static 'images/logo.png' %}" alt="OneHealth Network Logo">
+        <strong>OneHealth Network</strong>
+    </a>
+    <div class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'contributors' %}">Contributors</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="hero">
+    <h1>Welcome to OneHealth Network</h1>
+    <p><em>One Health. One Network. One Future.</em></p>
+    <div class="role-buttons d-flex flex-wrap justify-content-center mt-5">
+        <a href="{% url 'patient_login' %}" class="btn btn-primary btn-lg">I'm a Patient</a>
+        <a href="{% url 'doctor_login' %}" class="btn btn-success btn-lg">I'm a Doctor/Hospital</a>
+        <a href="{% url 'insurance_login' %}" class="btn btn-warning btn-lg text-dark">I'm an Insurance Provider</a>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 OneHealth Network. All rights reserved.
+</footer>
+
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

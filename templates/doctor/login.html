@@ -1,0 +1,27 @@
+<!-- templates/doctor/login.html -->
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card p-4 shadow-sm" style="width: 30rem;">
+        <h2 class="text-center mb-4">Doctor Login</h2>
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field|add_class:"form-control" }}
+                    {% if field.errors %}
+                        <div class="text-danger small mt-1">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
+        </form>
+        <div class="text-center">
+            <p>Don't have an account? <a href="{% url 'doctor_signup' %}" class="btn btn-link">Signup</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
