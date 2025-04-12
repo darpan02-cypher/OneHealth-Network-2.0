@@ -74,3 +74,6 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+#as of djongo restrictions --added this below
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'

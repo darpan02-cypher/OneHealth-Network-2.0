@@ -16,7 +16,6 @@
                     <a href="{% url 'patient_health_profile' %}" class="list-group-item list-group-item-action">
                         <i class="fas fa-user me-2 text-primary"></i>Health Profile
                     </a>
-                
                     <a href="#" class="list-group-item list-group-item-action">
                         <i class="fas fa-calendar-check me-2 text-success"></i>Appointments
                     </a>
@@ -47,7 +46,17 @@
                     <h5 class="mb-0">Hey, Welcome!</h5>
                 </div>
                 <div class="card-body">
-                    <p class="lead text-muted">Manage appointments, view records, and access your health info below.</p>
+                    <!-- Alert Message -->
+                    {% if not health_profile_created %}
+                    <div class="alert alert-warning text-center py-4" role="alert">
+                        <p class="mb-3 fs-5">You need to create a health profile to access all features.</p>
+                        <a href="{% url 'health_profile_view' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-user-plus me-2"></i>Create Health Profile
+                        </a>
+                    </div>
+                    {% endif %}
+                    
+                    <p class="lead text-muted mt-4">Manage appointments, view records, and access your health info below.</p>
                     <div class="row g-4">
                         <div class="col-md-4">
                             <div class="card border-0 shadow-sm h-100 text-center">

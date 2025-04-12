@@ -12,19 +12,16 @@ urlpatterns = [
     path('login/patient/', views.user_login, {'role': 'patient'}, name='patient_login'),
     path('login/doctor/', views.user_login, {'role': 'doctor'}, name='doctor_login'),
     path('login/insurance/', views.user_login, {'role': 'insurance'}, name='insurance_login'),
-    path('login/', views.login_view, name='login'),  # Updated to `login_view`
+    path('login/', views.login_view, name='login'),
 
     # Dashboard URLs
     path('dashboard/patient/', views.patient_dashboard, name='patient_dashboard'),
     path('dashboard/doctor/', views.doctor_dashboard, name='doctor_dashboard'),
     path('dashboard/insurance/', views.insurance_dashboard, name='insurance_dashboard'),
-    
-    
-    #patient's dashboard fields
-    #patients Health Profile
+
+    # Patient Health Profile
     path('dashboard/patient/health_profile/', views.patient_health_profile, name='patient_health_profile'),
-    
-    
+    path('dashboard/patient/health_profile/view/', views.health_profile_view, name='health_profile_view'),
 
     # Logout URL
     path('logout/', LogoutView.as_view(next_page='index'), name='logout'),

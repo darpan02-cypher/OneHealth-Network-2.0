@@ -32,3 +32,34 @@ class InsuranceProfile(models.Model):
 
     def __str__(self):
         return f"Insurance: {self.user.username}"
+    
+    
+    
+
+
+
+class HealthProfile(models.Model):
+    patient = models.OneToOneField(PatientProfile, on_delete=models.CASCADE, related_name='health_profile')
+    
+    dob = models.DateField(null=True, blank=True)
+    gender = models.CharField(max_length=20, blank=True)
+    blood_group = models.CharField(max_length=5, blank=True)
+    height = models.FloatField(null=True, blank=True)  # in cm
+    weight = models.FloatField(null=True, blank=True)  # in kg
+
+    allergies = models.TextField(blank=True)
+    chronic_conditions = models.TextField(blank=True)
+
+    emergency_name = models.CharField(max_length=255, blank=True)
+    emergency_phone = models.CharField(max_length=20, blank=True)
+
+    immunization = models.TextField(blank=True)
+    current_medications = models.TextField(blank=True)
+    active_prescriptions = models.FileField(upload_to='prescriptions/', null=True, blank=True)
+    medication_allergy_list = models.TextField(blank=True)
+    current_problems_list = models.TextField(blank=True)
+    lab_results = models.FileField(upload_to='lab_results/', null=True, blank=True)
+
+    def __str__(self):
+        return f"Health Profile of {self.patient.user.username}"
+

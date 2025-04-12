@@ -34,3 +34,35 @@ class InsuranceSignupForm(forms.Form):
 class LoginForm(forms.Form):
     email = forms.EmailField()  # Use email for login
     password = forms.CharField(widget=forms.PasswordInput)
+
+
+
+#health_profile_form.py
+# accounts/forms.py
+from django import forms
+from .models import HealthProfile
+
+class HealthProfileForm(forms.ModelForm):
+    class Meta:
+        model = HealthProfile
+        fields = [
+            'dob', 'gender', 'blood_group', 'height', 'weight',
+            'allergies', 'chronic_conditions',
+            'emergency_name', 'emergency_phone',
+            'immunization', 'current_medications', 'active_prescriptions',
+            'medication_allergy_list', 'current_problems_list', 'lab_results'
+        ]
+        widgets = {
+            'dob': forms.DateInput(attrs={'type': 'date'}),
+            'gender': forms.Select(choices=[('', 'Select'), ('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')]),
+            'blood_group': forms.Select(choices=[
+                ('', 'Select'), ('A+', 'A+'), ('A-', 'A-'), ('B+', 'B+'), ('B-', 'B-'),
+                ('AB+', 'AB+'), ('AB-', 'AB-'), ('O+', 'O+'), ('O-', 'O-')
+            ]),
+            'allergies': forms.Textarea(attrs={'rows': 2}),
+            'chronic_conditions': forms.Textarea(attrs={'rows': 2}),
+            'immunization': forms.Textarea(attrs={'rows': 2}),
+            'current_medications': forms.Textarea(attrs={'rows': 2}),
+            'medication_allergy_list': forms.Textarea(attrs={'rows': 2}),
+            'current_problems_list': forms.Textarea(attrs={'rows': 2}),
+        }

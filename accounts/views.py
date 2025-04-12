@@ -16,6 +16,11 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.db.utils import IntegrityError  # Import IntegrityError
 
+from django.shortcuts import render, redirect
+from .forms import HealthProfileForm
+from .models import HealthProfile, PatientProfile
+from django.contrib.auth.decorators import login_required
+
 
 # Signup Views
 def patient_signup(request):
@@ -158,7 +163,47 @@ def logout(request):
     return render(request, 'logout.html')
 
 
+@login_required
 def patient_health_profile(request):
-    return render(request, 'patient/health_profile.html')
-    
+    try:
+        patient_profile = request.user.patientprofile
+    except PatientProfile.DoesNotExist:
+        return redirect('health_profile_view')  # Redirect to health profile form if no patient profile exists
+
+    # Try to get existing health profile or create a new one
+    health_profile, created = HealthProfile.objects.get_or_create(patient=patient_profile)
+
+    if request.method == 'POST':
+        form = HealthProfileForm(request.POST, request.FILES, instance=health_profile)
+        if form.is_valid():
+            form.save()
+            return redirect('patient_health_profile')  # Redirect to the same page after saving
+    else:
+        form = HealthProfileForm(instance=health_profile)  # Pre-fill the form with existing data
+
+    return render(request, 'patient/health_profile.html', {'form': form, 'health_profile': health_profile})
+
+
+@login_required
+def health_profile_view(request):
+    try:
+        patient_profile = request.user.patientprofile
+    except PatientProfile.DoesNotExist:
+        # Redirect to the patient dashboard with a message if no profile exists
+        return redirect('patient_dashboard')
+
+    # Try to get existing health profile
+    health_profile, created = HealthProfile.objects.get_or_create(patient=patient_profile)
+
+    if request.method == 'POST':
+        form = HealthProfileForm(request.POST, request.FILES, instance=health_profile)
+        if form.is_valid():
+            form.instance.patient = patient_profile
+            form.save()
+            return redirect('patient_dashboard')  # Redirect after saving
+    else:
+        form = HealthProfileForm(instance=health_profile)
+
+    return render(request, 'patient/health_profile_form.html', {'form': form})
+
 

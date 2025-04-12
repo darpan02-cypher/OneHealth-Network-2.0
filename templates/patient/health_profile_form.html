@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-4" style="background-color: #f3f6fa;">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-notes-medical me-2"></i>Health Profile</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+
+                        <!-- Personal Info -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light"><strong>Personal Information</strong></div>
+                            <div class="card-body">
+                                {{ form.dob.label_tag }} {{ form.dob }}
+                                {{ form.gender.label_tag }} {{ form.gender }}
+                                {{ form.blood_group.label_tag }} {{ form.blood_group }}
+                                {{ form.height.label_tag }} {{ form.height }}
+                                {{ form.weight.label_tag }} {{ form.weight }}
+                            </div>
+                        </div>
+
+                        <!-- Emergency Contact -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light"><strong>Emergency Contact</strong></div>
+                            <div class="card-body">
+                                {{ form.emergency_name.label_tag }} {{ form.emergency_name }}
+                                {{ form.emergency_phone.label_tag }} {{ form.emergency_phone }}
+                            </div>
+                        </div>
+
+                        <!-- Medical Details -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light"><strong>Medical Details</strong></div>
+                            <div class="card-body">
+                                {{ form.allergies.label_tag }} {{ form.allergies }}
+                                {{ form.chronic_conditions.label_tag }} {{ form.chronic_conditions }}
+                                {{ form.immunization.label_tag }} {{ form.immunization }}
+                                {{ form.current_medications.label_tag }} {{ form.current_medications }}
+                            </div>
+                        </div>
+
+                        <!-- Other Records -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light"><strong>Other Records</strong></div>
+                            <div class="card-body">
+                                {{ form.active_prescriptions.label_tag }} {{ form.active_prescriptions }}
+                                {{ form.medication_allergy_list.label_tag }} {{ form.medication_allergy_list }}
+                                {{ form.current_problems_list.label_tag }} {{ form.current_problems_list }}
+                                {{ form.lab_results.label_tag }} {{ form.lab_results }}
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-info text-white px-4">
+                                <i class="fas fa-save me-1"></i> Save Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
