@@ -1,4 +1,4 @@
-<img width="759" alt="onehealth_logo" src="https://github.com/user-attachments/assets/ad8a9094-9afa-4b6f-baec-3857e90d9763" />
+<img width="159"  alt="onehealth_logo" src="https://github.com/user-attachments/assets/ad8a9094-9afa-4b6f-baec-3857e90d9763" />
 
 # OneHealth-Network-2.0
 
