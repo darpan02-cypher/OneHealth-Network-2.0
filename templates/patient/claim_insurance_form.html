@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %} {# Load static just in case, though not used directly here #}
+
+{% block extra_css %}
+    {# Add specific styles if needed, or rely on base.html and Bootstrap #}
+    <style>
+        /* Optional: Ensure labels have a bit of space */
+        .form-label {
+            margin-bottom: 0.3rem;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4" style="background-color: #f3f6fa;"> {# Consistent background #}
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6"> {# Centered column, adjust width as needed (e.g., col-md-8) #}
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-primary text-white"> {# Header style similar to schedule_appointments #}
+                    <h5 class="mb-0">
+                        <i class="fas fa-file-invoice-dollar me-2"></i> Claim Insurance
+                    </h5>
+                </div>
+                <div class="card-body p-4"> {# Padding inside the card #}
+                    <form method="post" action="{% url 'claim_insurance' %}" novalidate> {# Added novalidate like other forms #}
+                        {% csrf_token %}
+
+                        {# Policy Number Field #}
+                        <div class="mb-3"> {# Margin bottom for spacing #}
+                            <label for="policy_number" class="form-label">Policy Number:</label>
+                            <input type="text" id="policy_number" name="policy_number" class="form-control" required>
+                            {# Add potential error display if using Django forms later #}
+                            {# <div class="invalid-feedback">Please enter your policy number.</div> #}
+                        </div>
+
+                        {# Claim Amount Field #}
+                        <div class="mb-3">
+                            <label for="claim_amount" class="form-label">Claim Amount:</label>
+                            <input type="number" id="claim_amount" name="claim_amount" class="form-control" required step="0.01" min="0"> {# Added step/min for number input #}
+                            {# <div class="invalid-feedback">Please enter a valid claim amount.</div> #}
+                        </div>
+
+                        {# Reason Field #}
+                        <div class="mb-3">
+                            <label for="reason" class="form-label">Reason for Claim:</label>
+                            <textarea id="reason" name="reason" class="form-control" rows="4" required></textarea> {# Added rows attribute #}
+                            {# <div class="invalid-feedback">Please provide a reason for the claim.</div> #}
+                        </div>
+
+                        {# Submit Button #}
+                        <div class="text-end mt-4"> {# Align button to the right, add top margin #}
+                             <a href="{% url 'patient_dashboard' %}" class="btn btn-secondary me-2"> {# Optional Cancel Button #}
+                                <i class="fas fa-times me-1"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fas fa-paper-plane me-1"></i> Submit Claim
+                            </button>
+                        </div>
+                    </form>
+                </div> {# End card-body #}
+            </div> {# End card #}
+        </div> {# End col #}
+    </div> {# End row #}
+</div> {# End container-fluid #}
+{% endblock %}

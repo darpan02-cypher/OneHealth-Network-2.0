@@ -74,4 +74,13 @@ class ScheduleAppointment(models.Model):
     def __str__(self):
         return f"Appointment for {self.patient.user.username} with {self.doctor.user.username} on {self.appointment_date}"
 
+class InsuranceClaim(models.Model):
+    policy_number = models.CharField(max_length=50)
+    claim_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    reason = models.TextField()
+    submitted_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Claim {self.policy_number} - {self.claim_amount}"
+
 

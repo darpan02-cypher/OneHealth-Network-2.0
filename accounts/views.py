@@ -20,6 +20,7 @@ from django.shortcuts import render, redirect
 from .forms import HealthProfileForm
 from .models import HealthProfile, PatientProfile
 from django.contrib.auth.decorators import login_required
+from .models import InsuranceClaim
 
 
 # Signup Views
@@ -221,6 +222,22 @@ def schedule_appointment(request):
 #static appointment page
 def static_appointment_page(request):
     return render(request, 'patient/static_appointment_page.html')
+
+# Claim Insurance
+def claim_insurance(request):
+    if request.method == 'POST':
+        policy_number = request.POST['policy_number']
+        claim_amount = request.POST['claim_amount']
+        reason = request.POST['reason']
+        
+        # Save the claim to the database
+        InsuranceClaim.objects.create(
+            policy_number=policy_number,
+            claim_amount=claim_amount,
+            reason=reason
+        )
+        return HttpResponse("Insurance claim submitted successfully!")
+    return render(request, 'patient/claim_insurance_form.html')
 
 
 

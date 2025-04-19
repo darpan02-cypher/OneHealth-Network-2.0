@@ -24,8 +24,6 @@ urlpatterns = [
     path('dashboard/patient/health_profile/view/', views.health_profile_view, name='health_profile_view'),
     path('dashboard/patient/schedule_appointment/', views.schedule_appointment, name='schedule_appointment'),
     
-
-
     # Logout URL
     path('logout/', LogoutView.as_view(next_page='index'), name='logout'),
     
@@ -35,4 +33,6 @@ urlpatterns = [
     #just fetch static_appointment_page html
     path('dashboard/patient/static_appointment_page/', views.static_appointment_page, name='static_appointment_page'),
     
+    # Claim Insurance Form
+    path('claim-insurance/', views.claim_insurance, name='claim_insurance'),
 ]
