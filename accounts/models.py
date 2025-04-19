@@ -40,7 +40,7 @@ class InsuranceProfile(models.Model):
 
 class HealthProfile(models.Model):
     patient = models.OneToOneField(PatientProfile, on_delete=models.CASCADE, related_name='health_profile')
-    
+
     dob = models.DateField(null=True, blank=True)
     gender = models.CharField(max_length=20, blank=True)
     blood_group = models.CharField(max_length=5, blank=True)

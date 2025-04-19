@@ -37,6 +37,7 @@ class LoginForm(forms.Form):
 
 
 
+
 #health_profile_form.py
 # accounts/forms.py
 from django import forms
@@ -66,3 +67,4 @@ class HealthProfileForm(forms.ModelForm):
             'medication_allergy_list': forms.Textarea(attrs={'rows': 2}),
             'current_problems_list': forms.Textarea(attrs={'rows': 2}),
         }
+        

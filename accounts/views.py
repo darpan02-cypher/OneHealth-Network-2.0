@@ -163,47 +163,34 @@ def logout(request):
     return render(request, 'logout.html')
 
 
+
+
+# Patient Health Profile
 @login_required
 def patient_health_profile(request):
-    try:
-        patient_profile = request.user.patientprofile
-    except PatientProfile.DoesNotExist:
-        return redirect('health_profile_view')  # Redirect to health profile form if no patient profile exists
-
-    # Try to get existing health profile or create a new one
-    health_profile, created = HealthProfile.objects.get_or_create(patient=patient_profile)
-
-    if request.method == 'POST':
-        form = HealthProfileForm(request.POST, request.FILES, instance=health_profile)
-        if form.is_valid():
-            form.save()
-            return redirect('patient_health_profile')  # Redirect to the same page after saving
-    else:
-        form = HealthProfileForm(instance=health_profile)  # Pre-fill the form with existing data
-
-    return render(request, 'patient/health_profile.html', {'form': form, 'health_profile': health_profile})
-
-
+    form = HealthProfileForm()  # Initialize the form
+    return render(request, 'patient/health_profile_form.html', {'form': form})
 @login_required
 def health_profile_view(request):
     try:
-        patient_profile = request.user.patientprofile
-    except PatientProfile.DoesNotExist:
-        # Redirect to the patient dashboard with a message if no profile exists
-        return redirect('patient_dashboard')
-
-    # Try to get existing health profile
-    health_profile, created = HealthProfile.objects.get_or_create(patient=patient_profile)
+        health_profile = HealthProfile.objects.get(patient__user=request.user)
+    except HealthProfile.DoesNotExist:
+        health_profile = None
 
     if request.method == 'POST':
         form = HealthProfileForm(request.POST, request.FILES, instance=health_profile)
         if form.is_valid():
-            form.instance.patient = patient_profile
-            form.save()
-            return redirect('patient_dashboard')  # Redirect after saving
+            health_profile = form.save(commit=False)
+            health_profile.patient = PatientProfile.objects.get(user=request.user)
+            health_profile.save()
+            return redirect('patient_dashboard')
     else:
         form = HealthProfileForm(instance=health_profile)
 
-    return render(request, 'patient/health_profile_form.html', {'form': form})
+    return render(request, 'patient/health_profile_view.html', {'form': form})
+
+
+
+
 
 
