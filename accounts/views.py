@@ -189,6 +189,33 @@ def health_profile_view(request):
 
     return render(request, 'patient/health_profile_view.html', {'form': form})
 
+from .forms import ScheduleAppointmentForm
+
+#schedule appointment
+#just in this patient can make appointment and navigates to appintment form
+@login_required
+def schedule_appointment(request):
+    if request.method == 'POST':
+        form = ScheduleAppointmentForm(request.POST)
+        if form.is_valid():
+            appointment = form.save(commit=False)
+            appointment.patient = PatientProfile.objects.get(user=request.user)
+            appointment.save()
+            return redirect('patient_dashboard')
+    else:
+        form = ScheduleAppointmentForm()
+    return render(request, 'patient/schedule_appointments.html', {'form': form})
+#     #doctor = forms.ModelChoiceField(queryset=DoctorProfile.objects.all(), label="Select Doctor")
+#     #appointment_date = forms.DateTimeField(label="Appointment Date")
+#     #appointment_time = forms.TimeField(label="Appointment Time")
+#     #reason = forms.CharField(widget=forms.Textarea, required=False, label="Reason for Appointment")
+#     #appointment = ScheduleAppointment.objects.create(
+#     #    patient=request.user.patientprofile,
+#     #    doctor=doctor,
+#     #    appointment_date=appointment_date,
+#     #    appointment_time=appointment_time,
+#     #    reason=reason    
+
 
 
 

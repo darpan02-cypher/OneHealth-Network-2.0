@@ -68,3 +68,16 @@ class HealthProfileForm(forms.ModelForm):
             'current_problems_list': forms.Textarea(attrs={'rows': 2}),
         }
         
+        
+        
+           
+#schedule_appointment_form.py
+class ScheduleAppointmentForm(forms.Form):
+    #doctor = forms.ModelChoiceField(queryset=DoctorProfile.objects.all(), label="Select Doctor")
+        
+    doctor = forms.CharField(max_length=150, label="Select Doctor") # need to change this 
+    appointment_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label="Appointment Date")
+    appointment_time = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}), label="Appointment Time")
+    reason = forms.CharField(widget=forms.Textarea, required=False, label="Reason for Appointment")
+    notes = forms.CharField(widget=forms.Textarea, required=False, label="Additional Notes")
+    

@@ -62,4 +62,16 @@ class HealthProfile(models.Model):
 
     def __str__(self):
         return f"Health Profile of {self.patient.user.username}"
+    
+    
+    
+class ScheduleAppointment(models.Model):
+    patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE, related_name='appointments')
+    appointment_date = models.DateTimeField()
+    reason = models.TextField()
+
+    def __str__(self):
+        return f"Appointment for {self.patient.user.username} with {self.doctor.user.username} on {self.appointment_date}"
+
 
