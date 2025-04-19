@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Appointments</title>
+    <style>
+        body {font-family: 'Arial', sans-serif;background-color: #f4f4f4;color: #333;margin: 0;padding: 0;display: flex;flex-direction: column;min-height: 100vh;}
+        h1 {color: #fff;background-color: #007bff;padding: 20px;text-align: center;margin-bottom: 20px;border-bottom: 2px solid #0056b3;}
+        table {width: 90%;margin: 20px auto;border-collapse: separate;border-spacing: 0;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);background-color: #fff;border-radius: 8px;overflow: hidden;}
+        th, td {padding: 15px 20px;text-align: left;border-bottom: 1px solid #ddd;}
+        .button-container {text-align: center;margin-bottom: 20px;}
+        th {background-color: #f8f9fa;color: #495057;font-weight: 600;text-transform: uppercase;}
+        tr:nth-child(even) {background-color: #f2f2f2;}
+        tr:hover {background-color: #e9ecef;}
+        td {font-size: 16px;}
+        .container {flex-grow: 1;padding: 20px;}
+        .no-appointments {text-align: center;font-size: 18px;color: #6c757d;padding: 20px;}
+        .footer {background-color: #343a40;color: #fff;text-align: center;padding: 10px;margin-top: auto;}
+        .schedule-button {background-color: #28a745;color: white;padding: 10px 20px;border: none;border-radius: 5px;cursor: pointer;text-decoration: none;display: inline-block;}
+        /* Responsive design */
+        @media (max-width: 768px) {
+            table {width: 95%;}
+            th, td {padding: 10px;}
+            td {font-size: 14px;}
+        }
+        @media (max-width: 576px) {
+            table {width: 100%;}
+            th, td {display: block;text-align: left;}
+            thead {display: none;}
+            tr {margin-bottom: 15px;display: block;border: 1px solid #ddd;border-radius: 8px;}
+            td {border: none;position: relative;padding-left: 50%;}
+            td::before {position: absolute;left: 15px;font-weight: bold;content: attr(data-label);text-transform: uppercase;}
+            h1 {font-size: 1.5rem;}
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>My Previous Appointments</h1>
+        
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Doctor</th>
+                    <th>Department</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% comment %} Fake data for previous appointments {% endcomment %}
+                <tr>
+                    <td data-label="Date">2023-10-26</td>
+                    <td data-label="Time">10:00 AM</td>
+                    <td data-label="Doctor">Dr. Smith</td>
+                    <td data-label="Department">Cardiology</td>
+                    <td data-label="Reason">Check-up</td>
+                </tr>
+                <tr>
+                    <td data-label="Date">2023-11-15</td>
+                    <td data-label="Time">02:30 PM</td>
+                    <td data-label="Doctor">Dr. Johnson</td>
+                    <td data-label="Department">Dermatology</td>
+                    <td data-label="Reason">Skin rash</td>
+                </tr>
+                <tr><td data-label="Date">2023-12-05</td><td data-label="Time">09:00 AM</td><td data-label="Doctor">Dr. Williams</td><td data-label="Department">Pediatrics</td><td data-label="Reason">Child's checkup</td></tr>
+                <tr><td data-label="Date">2023-12-20</td><td data-label="Time">03:00 PM</td><td data-label="Doctor">Dr. Brown</td><td data-label="Department">Neurology</td><td data-label="Reason">Headache</td></tr>
+                <tr><td data-label="Date">2024-01-10</td><td data-label="Time">11:30 AM</td><td data-label="Doctor">Dr. Davis</td><td data-label="Department">Orthopedics</td><td data-label="Reason">Knee pain</td></tr>
+            </tbody>
+        </table>
+        <div class="button-container">
+            <a href="{% url 'schedule_appointment' %}" class="schedule-button">Schedule New Appointment</a>
+        </div>
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 OneHealth Network</p>
+    </div>
+</body>
+</html>

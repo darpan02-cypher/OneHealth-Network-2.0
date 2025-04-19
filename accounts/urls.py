@@ -31,4 +31,8 @@ urlpatterns = [
     
     # Patient Health Profile
     path('dashboard/patient/health_profile/', views.patient_health_profile, name='patient_health_profile'),
+    
+    #just fetch static_appointment_page html
+    path('dashboard/patient/static_appointment_page/', views.static_appointment_page, name='static_appointment_page'),
+    
 ]

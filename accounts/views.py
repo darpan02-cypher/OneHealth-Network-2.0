@@ -218,6 +218,12 @@ def schedule_appointment(request):
 
 
 
+#static appointment page
+def static_appointment_page(request):
+    return render(request, 'patient/static_appointment_page.html')
+
+
+
 
 
 
