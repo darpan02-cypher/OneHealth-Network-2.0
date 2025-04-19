@@ -1,7 +1,196 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
-<div class="container mt-5">
-    <h2>Welcome to Patient Dashboard</h2>
-    <p>Access your medical history, insurance claims, and more.</p>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <div class="sidebar-header text-center mb-4">
+                    <h4>Doctor Portal</h4>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'doctor_dashboard' %}">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-user-circle me-2"></i>Patients
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-calendar-check me-2"></i>Check Appointments
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-file-invoice-dollar me-2"></i>Billing
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-prescription me-2"></i>Prescriptions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-file-medical me-2"></i>Medical Records
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-comment-medical me-2"></i>Messages
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-user-plus me-2"></i>Register Patient
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-chart-bar me-2"></i>Reports
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-footer mt-4 pt-3 border-top">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-cog me-2"></i>Settings
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Doctor Dashboard</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group me-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                        <span data-feather="calendar"></span>
+                        This week
+                    </button>
+                </div>
+            </div>
+
+            <!-- Upcoming Appointments Card -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Upcoming Appointments</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if appointments %}
+                            <div class="list-group list-group-flush">
+                                {% for appointment in appointments %}
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">{{ appointment.patient }}</h6>
+                                        <small>{{ appointment.date|date:"M d, Y" }}</small>
+                                    </div>
+                                    <p class="mb-1">{{ appointment.reason }}</p>
+                                    <small class="text-muted">{{ appointment.time|time:"g:i A" }}</small>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-calendar-times text-muted mb-3" style="font-size: 2rem;"></i>
+                                <p>No upcoming appointments</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer bg-light">
+                            <a href="#" class="btn btn-sm btn-outline-info float-end">View All</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity Section -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0"><i class="fas fa-history me-2"></i>Recent Activity</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>                                        
+                                        <tr>                                            
+                                            <th>Date</th>                                            
+                                            <th>Patient</th>                                            
+                                            <th>Activity</th>                                            
+                                            <th>Details</th>                                            
+                                            <th>Status</th>                                        
+                                        </tr>                                    
+                                    </thead>                                    
+                                    <tbody>                                        
+                                        <tr>                                            
+                                            <td>Today</td>                                            
+                                            <td>John Doe</td>                                            
+                                            <td>Regular Checkup</td>                                            
+                                            <td>N/A</td>                                            
+                                            <td><span class="badge bg-success">Pending</span></td>                                        
+                                        </tr>                                        
+                                        <tr>                                            
+                                            <td>Yesterday</td>                                            
+                                            <td>Jane Smith</td>                                            
+                                            <td>Lab Results</td>                                            
+                                            <td>Blood Test</td>                                            
+                                            <td><span class="badge bg-info">Completed</span></td>                                        
+                                        </tr>                                        
+                                        <tr>                                            
+                                            <td>May 12</td>                                            
+                                            <td>Alice Johnson</td>                                            
+                                            <td>ECG</td>                                            
+                                            <td>Heart rate 70 bpm, sinus rhythm, no ST-T changes, normal QRS</td>                                            
+                                            <td><span class="badge bg-warning">Completed</span></td>                                        
+                                        </tr>                                    
+                                    </tbody>                                
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 </div>
+
+<!-- Dashboard-specific JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Activate tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+
+    // Sidebar toggle functionality
+    document.getElementById('sidebarToggle').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.toggle('active');
+    });
+});
+</script>
 {% endblock %}
