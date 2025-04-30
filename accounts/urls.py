@@ -22,6 +22,7 @@ urlpatterns = [
     # Patient Health Profile
     path('dashboard/patient/health_profile/', views.patient_health_profile, name='patient_health_profile'),
     path('dashboard/patient/health_profile/view/', views.health_profile_view, name='health_profile_view'),
+    path('dashboard/patient/health_profile/details/', views.view_health_profile, name='view_health_profile'),
     path('dashboard/patient/schedule_appointment/', views.schedule_appointment, name='schedule_appointment'),
     
     # Logout URL

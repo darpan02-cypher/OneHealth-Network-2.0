@@ -43,7 +43,7 @@ class LoginForm(forms.Form):
 from django import forms
 from .models import HealthProfile
 
-class HealthProfileForm(forms.ModelForm):
+class HealthProfileForm(forms.ModelForm): # This form is for the HealthProfile model
     class Meta:
         model = HealthProfile
         fields = [

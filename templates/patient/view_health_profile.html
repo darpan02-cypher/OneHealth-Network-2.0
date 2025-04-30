@@ -1,0 +1,15 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Health Profile Details</title>
+</head>
+<body>
+    <h1>Health Profile Details</h1>
+    <p><strong>Age:</strong> {{ health_profile.age }}</p>
+    <p><strong>Medical History:</strong> {{ health_profile.medical_history }}</p>
+    <p><strong>Additional Notes:</strong> {{ health_profile.additional_notes }}</p>
+    <!-- Add more fields as necessary -->
+    <a href="{% url 'patient_dashboard' %}">Back to Dashboard</a>
+</body>
+</html>

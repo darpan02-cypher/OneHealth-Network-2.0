@@ -169,12 +169,12 @@ def logout(request):
 # Patient Health Profile
 @login_required
 def patient_health_profile(request):
-    form = HealthProfileForm()  # Initialize the form
-    return render(request, 'patient/health_profile_form.html', {'form': form})
-@login_required
-def health_profile_view(request):
+    # Ensure the PatientProfile exists for the logged-in user
+    patient_profile = PatientProfile.objects.get_or_create(user=request.user)[0]
+
     try:
-        health_profile = HealthProfile.objects.get(patient__user=request.user)
+        # Check if the health profile exists
+        health_profile = HealthProfile.objects.get(patient=patient_profile)
     except HealthProfile.DoesNotExist:
         health_profile = None
 
@@ -182,13 +182,49 @@ def health_profile_view(request):
         form = HealthProfileForm(request.POST, request.FILES, instance=health_profile)
         if form.is_valid():
             health_profile = form.save(commit=False)
-            health_profile.patient = PatientProfile.objects.get(user=request.user)
+            health_profile.patient = patient_profile
             health_profile.save()
             return redirect('patient_dashboard')
     else:
         form = HealthProfileForm(instance=health_profile)
 
-    return render(request, 'patient/health_profile_view.html', {'form': form})
+    return render(request, 'patient/health_profile_form.html', {
+        'form': form,
+        'is_edit': health_profile is not None  # Pass a flag to indicate edit mode
+    })
+
+@login_required
+def health_profile_view(request):
+    try:
+        # Fetch the health profile for the logged-in patient
+        health_profile = HealthProfile.objects.get(patient__user=request.user)
+    except HealthProfile.DoesNotExist:
+        return redirect('patient_health_profile')  # Redirect to the form if no profile exists
+
+    if request.method == 'POST':
+        form = HealthProfileForm(request.POST, request.FILES, instance=health_profile)
+        if form.is_valid():
+            form.save()
+            return redirect('patient_dashboard')
+    else:
+        form = HealthProfileForm(instance=health_profile)
+
+    return render(request, 'patient/health_profile_view.html', {
+        'form': form,
+        'is_edit': True  # Always in edit mode for this view
+    })
+
+@login_required
+def view_health_profile(request):
+    try:
+        # Fetch the health profile for the logged-in patient
+        health_profile = HealthProfile.objects.get(patient__user=request.user)
+    except HealthProfile.DoesNotExist:
+        return redirect('patient_health_profile')  # Redirect to the form if no profile exists
+
+    return render(request, 'patient/view_health_profile.html', {
+        'health_profile': health_profile
+    })
 
 from .forms import ScheduleAppointmentForm
 
@@ -222,6 +258,8 @@ def schedule_appointment(request):
 #static appointment page
 def static_appointment_page(request):
     return render(request, 'patient/static_appointment_page.html')
+
+
 
 # Claim Insurance
 def claim_insurance(request):
