@@ -1,26 +1,88 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Patient Health Profile</title>
-</head>
-<body>
-    <h1>Patient Health Profile</h1>
-    <p><strong>Patient Name:</strong> {{ health_profile.patient_name }}</p>
-    <p><strong>Date of Birth:</strong> {{ health_profile.dob }}</p>
-    <p><strong>Gender:</strong> {{ health_profile.gender }}</p>
-    <p><strong>Blood Group:</strong> {{ health_profile.blood_group }}</p>
-    <p><strong>Height:</strong> {{ health_profile.height }} cm</p>
-    <p><strong>Weight:</strong> {{ health_profile.weight }} kg</p>
-    <p><strong>Allergies:</strong> {{ health_profile.allergies }}</p>
-    <p><strong>Chronic Conditions:</strong> {{ health_profile.chronic_conditions }}</p>
-    <p><strong>Emergency Contact Name:</strong> {{ health_profile.emergency_name }}</p>
-    <p><strong>Emergency Contact Phone:</strong> {{ health_profile.emergency_phone }}</p>
-    <p><strong>Immunization:</strong> {{ health_profile.immunization }}</p>
-    <p><strong>Current Medications:</strong> {{ health_profile.current_medications }}</p>
-    <p><strong>Active Prescriptions:</strong> {{ health_profile.active_prescriptions }}</p>
-    <p><strong>Medication Allergy List:</strong> {{ health_profile.medication_allergy_list }}</p>
-    <p><strong>Current Problems List:</strong> {{ health_profile.current_problems_list }}</p>
-    <p><strong>Lab Results:</strong> {{ health_profile.lab_results }}</p>
-    <a href="{% url 'doctor_dashboard' %}">Back to Dashboard</a>
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user-circle me-2"></i> Patient Health Profile
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Personal Information -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light py-2">
+                            <strong>Personal Information</strong>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Patient Name:</strong> {{ health_profile.patient_name }}</p>
+                            <p><strong>Date of Birth:</strong> {{ health_profile.dob }}</p>
+                            <p><strong>Gender:</strong> {{ health_profile.gender }}</p>
+                            <p><strong>Blood Group:</strong> {{ health_profile.blood_group }}</p>
+                            <p><strong>Height:</strong> {{ health_profile.height }} cm</p>
+                            <p><strong>Weight:</strong> {{ health_profile.weight }} kg</p>
+                        </div>
+                    </div>
+
+                    <!-- Emergency Contact -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light py-2">
+                            <strong>Emergency Contact</strong>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Contact Name:</strong> {{ health_profile.emergency_name }}</p>
+                            <p><strong>Contact Phone:</strong> {{ health_profile.emergency_phone }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Medical Details -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light py-2">
+                            <strong>Medical Details</strong>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Allergies:</strong> {{ health_profile.allergies }}</p>
+                            <p><strong>Chronic Conditions:</strong> {{ health_profile.chronic_conditions }}</p>
+                            <p><strong>Immunization:</strong> {{ health_profile.immunization }}</p>
+                            <p><strong>Current Medications:</strong> {{ health_profile.current_medications }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Other Records -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light py-2">
+                            <strong>Other Records</strong>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Active Prescriptions:</strong> 
+                                {% if health_profile.active_prescriptions %}
+                                    <a href="{{ health_profile.active_prescriptions.url }}" target="_blank">Download</a>
+                                {% else %}
+                                    Not Available
+                                {% endif %}
+                            </p>
+                            <p><strong>Medication Allergy List:</strong> {{ health_profile.medication_allergy_list }}</p>
+                            <p><strong>Current Problems List:</strong> {{ health_profile.current_problems_list }}</p>
+                            <p><strong>Lab Results:</strong> 
+                                {% if health_profile.lab_results %}
+                                    <a href="{{ health_profile.lab_results.url }}" target="_blank">Download</a>
+                                {% else %}
+                                    Not Available
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-light text-end">
+                    <a href="{% url 'doctor_dashboard' %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
