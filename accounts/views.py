@@ -21,6 +21,7 @@ from .forms import HealthProfileForm
 from .models import HealthProfile, PatientProfile
 from django.contrib.auth.decorators import login_required
 from .models import InsuranceClaim
+from .forms import ScheduleAppointmentForm  # Correct import statement
 
 
 # Signup Views
@@ -117,10 +118,10 @@ def user_login(request, role):
         form = LoginForm(data=request.POST)
         if form.is_valid():
             user = authenticate(
-                email=form.cleaned_data['email'],  # Use email for authentication
+                username=form.cleaned_data['email'],  # Use email for authentication
                 password=form.cleaned_data['password']
             )
-            if user:
+            if user is not None:
                 login(request, user)
                 return redirect(f'{role}_dashboard')  # e.g., patient_dashboard
             else:
@@ -139,7 +140,14 @@ def patient_dashboard(request):
 
 @login_required
 def doctor_dashboard(request):
-    return render(request, 'doctor/dashboard.html')
+    patients = PatientProfile.objects.all()  # Fetch all patients
+
+    # Filter by patient_id if provided
+    patient_id = request.GET.get('patient_id')
+    if patient_id:
+        patients = patients.filter(id=patient_id)
+
+    return render(request, 'doctor/dashboard.html', {'patients': patients})
 
 @login_required
 def insurance_dashboard(request):
@@ -183,6 +191,9 @@ def patient_health_profile(request):
         if form.is_valid():
             health_profile = form.save(commit=False)
             health_profile.patient = patient_profile
+            # Ensure patient_name is set to a valid string
+            if not health_profile.patient_name:
+                health_profile.patient_name = request.user.username  # Default to username if not provided
             health_profile.save()
             return redirect('patient_dashboard')
     else:
@@ -226,10 +237,24 @@ def view_health_profile(request):
         'health_profile': health_profile
     })
 
-from .forms import ScheduleAppointmentForm
+@login_required
+def view_patient_health_profile(request, patient_id):
+    try:
+        # Fetch the patient profile using the provided patient_id
+        patient_profile = PatientProfile.objects.get(id=patient_id)
+        # Fetch the health profile associated with the patient
+        health_profile = HealthProfile.objects.get(patient=patient_profile)
+    except PatientProfile.DoesNotExist:
+        return HttpResponse("Patient not found.", status=404)
+    except HealthProfile.DoesNotExist:
+        return HttpResponse("Health profile not found for this patient.", status=404)
+
+    return render(request, 'doctor/view_patient_health_profile.html', {
+        'patient_profile': patient_profile,
+        'health_profile': health_profile
+    })
 
 #schedule appointment
-#just in this patient can make appointment and navigates to appintment form
 @login_required
 def schedule_appointment(request):
     if request.method == 'POST':
@@ -242,30 +267,17 @@ def schedule_appointment(request):
     else:
         form = ScheduleAppointmentForm()
     return render(request, 'patient/schedule_appointments.html', {'form': form})
-#     #doctor = forms.ModelChoiceField(queryset=DoctorProfile.objects.all(), label="Select Doctor")
-#     #appointment_date = forms.DateTimeField(label="Appointment Date")
-#     #appointment_time = forms.TimeField(label="Appointment Time")
-#     #reason = forms.CharField(widget=forms.Textarea, required=False, label="Reason for Appointment")
-#     #appointment = ScheduleAppointment.objects.create(
-#     #    patient=request.user.patientprofile,
-#     #    doctor=doctor,
-#     #    appointment_date=appointment_date,
-#     #    appointment_time=appointment_time,
-#     #    reason=reason    
-
-
 
 #static appointment page
 def static_appointment_page(request):
     return render(request, 'patient/static_appointment_page.html')
-
-
 
 # Claim Insurance
 def claim_insurance(request):
     if request.method == 'POST':
         policy_number = request.POST['policy_number']
         claim_amount = request.POST['claim_amount']
+
         reason = request.POST['reason']
         
         # Save the claim to the database

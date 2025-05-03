@@ -3,16 +3,21 @@
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/custom_form_styles.css' %}">
-    {# Add any additional custom styles here if needed #}
     <style>
-        /* Optional: Add slight bottom margin to labels if needed */
         .form-label {
-            margin-bottom: 0.3rem; /* Adjust as needed */
-            display: block; /* Ensure label takes its own line */
+            margin-bottom: 0.5rem;
+            display: block;
+            font-weight: 500;
         }
-        /* Ensure widgets take full width by default unless in columns */
         .form-control, .form-select {
-             width: 100%;
+            width: 100%;
+        }
+        .card-header {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .form-section {
+            margin-bottom: 1.5rem;
         }
     </style>
 {% endblock %}
@@ -20,18 +25,17 @@
 {% block content %}
 <div class="container-fluid py-4" style="background-color: #f3f6fa;">
     <div class="row justify-content-center">
-        <div class="col-lg-10 col-xl-8"> {# Adjusted column width for potentially better centering on large screens #}
+        <div class="col-lg-10 col-xl-8">
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-header bg-info text-white">
                     <h5 class="mb-0">
                         <i class="fas fa-notes-medical me-2"></i> Patient Health Profile
                     </h5>
                 </div>
-                <div class="card-body p-4"> {# Added padding to card body #}
+                <div class="card-body p-4">
                     <form method="post" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}
 
-                        {# Display non-field errors if any #}
                         {% if form.non_field_errors %}
                             <div class="alert alert-danger" role="alert">
                                 {% for error in form.non_field_errors %}
@@ -41,136 +45,150 @@
                         {% endif %}
 
                         <!-- Personal Info -->
-                        <div class="card mb-4"> {# Increased bottom margin #}
-                            <div class="card-header bg-light py-2"> {# Reduced padding #}
-                                <strong>Personal Information</strong>
+                        <div class="card form-section">
+                            <div class="card-header bg-light py-2">
+                                Personal Information
                             </div>
                             <div class="card-body">
                                 <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <div class="form-group">
+                                            {{ form.patient_name.label_tag }}
+                                            {{ form.patient_name }}
+                                            {% if form.patient_name.errors %}<div class="invalid-feedback d-block">{{ form.patient_name.errors }}</div>{% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-4 mb-3">
-                                        {{ form.dob.label_tag }}
-                                        {{ form.dob }}
-                                        {% if form.dob.errors %}<div class="invalid-feedback d-block">{{ form.dob.errors }}</div>{% endif %}
-                                        {% if form.dob.help_text %}<small class="form-text text-muted">{{ form.dob.help_text }}</small>{% endif %}
+                                        <div class="form-group">
+                                            {{ form.dob.label_tag }}
+                                            {{ form.dob }}
+                                            {% if form.dob.errors %}<div class="invalid-feedback d-block">{{ form.dob.errors }}</div>{% endif %}
+                                        </div>
                                     </div>
                                     <div class="col-md-4 mb-3">
-                                        {{ form.gender.label_tag }}
-                                        {{ form.gender }}
-                                        {% if form.gender.errors %}<div class="invalid-feedback d-block">{{ form.gender.errors }}</div>{% endif %}
-                                        {% if form.gender.help_text %}<small class="form-text text-muted">{{ form.gender.help_text }}</small>{% endif %}
+                                        <div class="form-group">
+                                            {{ form.gender.label_tag }}
+                                            {{ form.gender }}
+                                            {% if form.gender.errors %}<div class="invalid-feedback d-block">{{ form.gender.errors }}</div>{% endif %}
+                                        </div>
                                     </div>
                                     <div class="col-md-4 mb-3">
-                                        {{ form.blood_group.label_tag }}
-                                        {{ form.blood_group }}
-                                        {% if form.blood_group.errors %}<div class="invalid-feedback d-block">{{ form.blood_group.errors }}</div>{% endif %}
-                                        {% if form.blood_group.help_text %}<small class="form-text text-muted">{{ form.blood_group.help_text }}</small>{% endif %}
+                                        <div class="form-group">
+                                            {{ form.blood_group.label_tag }}
+                                            {{ form.blood_group }}
+                                            {% if form.blood_group.errors %}<div class="invalid-feedback d-block">{{ form.blood_group.errors }}</div>{% endif %}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        {{ form.height.label_tag }}
-                                        {{ form.height }}
-                                        {% if form.height.errors %}<div class="invalid-feedback d-block">{{ form.height.errors }}</div>{% endif %}
-                                        {% if form.height.help_text %}<small class="form-text text-muted">{{ form.height.help_text }}</small>{% endif %}
+                                        <div class="form-group">
+                                            {{ form.height.label_tag }}
+                                            {{ form.height }}
+                                            {% if form.height.errors %}<div class="invalid-feedback d-block">{{ form.height.errors }}</div>{% endif %}
+                                        </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        {{ form.weight.label_tag }}
-                                        {{ form.weight }}
-                                        {% if form.weight.errors %}<div class="invalid-feedback d-block">{{ form.weight.errors }}</div>{% endif %}
-                                        {% if form.weight.help_text %}<small class="form-text text-muted">{{ form.weight.help_text }}</small>{% endif %}
+                                        <div class="form-group">
+                                            {{ form.weight.label_tag }}
+                                            {{ form.weight }}
+                                            {% if form.weight.errors %}<div class="invalid-feedback d-block">{{ form.weight.errors }}</div>{% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Emergency Contact -->
-                        <div class="card mb-4"> {# Increased bottom margin #}
-                            <div class="card-header bg-light py-2"> {# Reduced padding #}
-                                <strong>Emergency Contact</strong>
+                        <div class="card form-section">
+                            <div class="card-header bg-light py-2">
+                                Emergency Contact
                             </div>
                             <div class="card-body">
-                                <div class="mb-3">
-                                    {{ form.emergency_name.label_tag }}
-                                    {{ form.emergency_name }}
-                                    {% if form.emergency_name.errors %}<div class="invalid-feedback d-block">{{ form.emergency_name.errors }}</div>{% endif %}
-                                    {% if form.emergency_name.help_text %}<small class="form-text text-muted">{{ form.emergency_name.help_text }}</small>{% endif %}
-                                </div>
-                                <div class="mb-3">
-                                    {{ form.emergency_phone.label_tag }}
-                                    {{ form.emergency_phone }}
-                                    {% if form.emergency_phone.errors %}<div class="invalid-feedback d-block">{{ form.emergency_phone.errors }}</div>{% endif %}
-                                    {% if form.emergency_phone.help_text %}<small class="form-text text-muted">{{ form.emergency_phone.help_text }}</small>{% endif %}
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        {{ form.emergency_name.label_tag }}
+                                        {{ form.emergency_name }}
+                                        {% if form.emergency_name.errors %}<div class="invalid-feedback d-block">{{ form.emergency_name.errors }}</div>{% endif %}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        {{ form.emergency_phone.label_tag }}
+                                        {{ form.emergency_phone }}
+                                        {% if form.emergency_phone.errors %}<div class="invalid-feedback d-block">{{ form.emergency_phone.errors }}</div>{% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Medical Details -->
-                        <div class="card mb-4"> {# Increased bottom margin #}
-                            <div class="card-header bg-light py-2"> {# Reduced padding #}
-                                <strong>Medical Details</strong>
+                        <div class="card form-section">
+                            <div class="card-header bg-light py-2">
+                                Medical Details
                             </div>
                             <div class="card-body">
-                                <div class="mb-3">
-                                    {{ form.allergies.label_tag }}
-                                    {{ form.allergies }}
-                                    {% if form.allergies.errors %}<div class="invalid-feedback d-block">{{ form.allergies.errors }}</div>{% endif %}
-                                    {% if form.allergies.help_text %}<small class="form-text text-muted">{{ form.allergies.help_text }}</small>{% endif %}
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        {{ form.allergies.label_tag }}
+                                        {{ form.allergies }}
+                                        {% if form.allergies.errors %}<div class="invalid-feedback d-block">{{ form.allergies.errors }}</div>{% endif %}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        {{ form.chronic_conditions.label_tag }}
+                                        {{ form.chronic_conditions }}
+                                        {% if form.chronic_conditions.errors %}<div class="invalid-feedback d-block">{{ form.chronic_conditions.errors }}</div>{% endif %}
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    {{ form.chronic_conditions.label_tag }}
-                                    {{ form.chronic_conditions }}
-                                    {% if form.chronic_conditions.errors %}<div class="invalid-feedback d-block">{{ form.chronic_conditions.errors }}</div>{% endif %}
-                                    {% if form.chronic_conditions.help_text %}<small class="form-text text-muted">{{ form.chronic_conditions.help_text }}</small>{% endif %}
-                                </div>
-                                <div class="mb-3">
-                                    {{ form.immunization.label_tag }}
-                                    {{ form.immunization }}
-                                    {% if form.immunization.errors %}<div class="invalid-feedback d-block">{{ form.immunization.errors }}</div>{% endif %}
-                                    {% if form.immunization.help_text %}<small class="form-text text-muted">{{ form.immunization.help_text }}</small>{% endif %}
-                                </div>
-                                <div class="mb-3">
-                                    {{ form.current_medications.label_tag }}
-                                    {{ form.current_medications }}
-                                    {% if form.current_medications.errors %}<div class="invalid-feedback d-block">{{ form.current_medications.errors }}</div>{% endif %}
-                                    {% if form.current_medications.help_text %}<small class="form-text text-muted">{{ form.current_medications.help_text }}</small>{% endif %}
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        {{ form.immunization.label_tag }}
+                                        {{ form.immunization }}
+                                        {% if form.immunization.errors %}<div class="invalid-feedback d-block">{{ form.immunization.errors }}</div>{% endif %}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        {{ form.current_medications.label_tag }}
+                                        {{ form.current_medications }}
+                                        {% if form.current_medications.errors %}<div class="invalid-feedback d-block">{{ form.current_medications.errors }}</div>{% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Other Records -->
-                        <div class="card mb-4"> {# Increased bottom margin #}
-                            <div class="card-header bg-light py-2"> {# Reduced padding #}
-                                <strong>Other Records</strong>
+                        <div class="card form-section">
+                            <div class="card-header bg-light py-2">
+                                Other Records
                             </div>
                             <div class="card-body">
-                                <div class="mb-3">
-                                    {{ form.active_prescriptions.label_tag }}
-                                    {{ form.active_prescriptions }}
-                                    {% if form.active_prescriptions.errors %}<div class="invalid-feedback d-block">{{ form.active_prescriptions.errors }}</div>{% endif %}
-                                    {% if form.active_prescriptions.help_text %}<small class="form-text text-muted">{{ form.active_prescriptions.help_text }}</small>{% endif %}
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        {{ form.active_prescriptions.label_tag }}
+                                        {{ form.active_prescriptions }}
+                                        {% if form.active_prescriptions.errors %}<div class="invalid-feedback d-block">{{ form.active_prescriptions.errors }}</div>{% endif %}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        {{ form.medication_allergy_list.label_tag }}
+                                        {{ form.medication_allergy_list }}
+                                        {% if form.medication_allergy_list.errors %}<div class="invalid-feedback d-block">{{ form.medication_allergy_list.errors }}</div>{% endif %}
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    {{ form.medication_allergy_list.label_tag }}
-                                    {{ form.medication_allergy_list }}
-                                    {% if form.medication_allergy_list.errors %}<div class="invalid-feedback d-block">{{ form.medication_allergy_list.errors }}</div>{% endif %}
-                                    {% if form.medication_allergy_list.help_text %}<small class="form-text text-muted">{{ form.medication_allergy_list.help_text }}</small>{% endif %}
-                                </div>
-                                <div class="mb-3">
-                                    {{ form.current_problems_list.label_tag }}
-                                    {{ form.current_problems_list }}
-                                    {% if form.current_problems_list.errors %}<div class="invalid-feedback d-block">{{ form.current_problems_list.errors }}</div>{% endif %}
-                                    {% if form.current_problems_list.help_text %}<small class="form-text text-muted">{{ form.current_problems_list.help_text }}</small>{% endif %}
-                                </div>
-                                <div class="mb-3">
-                                    {{ form.lab_results.label_tag }}
-                                    {{ form.lab_results }}
-                                    {% if form.lab_results.errors %}<div class="invalid-feedback d-block">{{ form.lab_results.errors }}</div>{% endif %}
-                                    {% if form.lab_results.help_text %}<small class="form-text text-muted">{{ form.lab_results.help_text }}</small>{% endif %}
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        {{ form.current_problems_list.label_tag }}
+                                        {{ form.current_problems_list }}
+                                        {% if form.current_problems_list.errors %}<div class="invalid-feedback d-block">{{ form.current_problems_list.errors }}</div>{% endif %}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        {{ form.lab_results.label_tag }}
+                                        {{ form.lab_results }}
+                                        {% if form.lab_results.errors %}<div class="invalid-feedback d-block">{{ form.lab_results.errors }}</div>{% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="text-end mt-4"> {# Added top margin to button container #}
+                        <div class="text-end mt-4">
                             <a href="{% url 'patient_dashboard' %}" class="btn btn-secondary me-2">
                                 <i class="fas fa-times me-1"></i> Cancel
                             </a>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Patient Health Profile</title>
+</head>
+<body>
+    <h1>Patient Health Profile</h1>
+    <p><strong>Patient Name:</strong> {{ health_profile.patient_name }}</p>
+    <p><strong>Date of Birth:</strong> {{ health_profile.dob }}</p>
+    <p><strong>Gender:</strong> {{ health_profile.gender }}</p>
+    <p><strong>Blood Group:</strong> {{ health_profile.blood_group }}</p>
+    <p><strong>Height:</strong> {{ health_profile.height }} cm</p>
+    <p><strong>Weight:</strong> {{ health_profile.weight }} kg</p>
+    <p><strong>Allergies:</strong> {{ health_profile.allergies }}</p>
+    <p><strong>Chronic Conditions:</strong> {{ health_profile.chronic_conditions }}</p>
+    <p><strong>Emergency Contact Name:</strong> {{ health_profile.emergency_name }}</p>
+    <p><strong>Emergency Contact Phone:</strong> {{ health_profile.emergency_phone }}</p>
+    <p><strong>Immunization:</strong> {{ health_profile.immunization }}</p>
+    <p><strong>Current Medications:</strong> {{ health_profile.current_medications }}</p>
+    <p><strong>Active Prescriptions:</strong> {{ health_profile.active_prescriptions }}</p>
+    <p><strong>Medication Allergy List:</strong> {{ health_profile.medication_allergy_list }}</p>
+    <p><strong>Current Problems List:</strong> {{ health_profile.current_problems_list }}</p>
+    <p><strong>Lab Results:</strong> {{ health_profile.lab_results }}</p>
+    <a href="{% url 'doctor_dashboard' %}">Back to Dashboard</a>
+</body>
+</html>

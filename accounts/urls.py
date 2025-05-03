@@ -24,6 +24,9 @@ urlpatterns = [
     path('dashboard/patient/health_profile/view/', views.health_profile_view, name='health_profile_view'),
     path('dashboard/patient/health_profile/details/', views.view_health_profile, name='view_health_profile'),
     path('dashboard/patient/schedule_appointment/', views.schedule_appointment, name='schedule_appointment'),
+
+    # View Patient Health Profile (Doctor's Dashboard)
+    path('dashboard/doctor/patient/<int:patient_id>/health_profile/', views.view_patient_health_profile, name='view_patient_health_profile'),
     
     # Logout URL
     path('logout/', LogoutView.as_view(next_page='index'), name='logout'),

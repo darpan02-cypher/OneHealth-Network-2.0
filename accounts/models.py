@@ -15,7 +15,9 @@ class PatientProfile(models.Model):
     medical_history = models.TextField(blank=True)
 
     def __str__(self):
-        return f"Patient: {self.user.username}"
+        if self.user:
+            return f"Patient: {self.user.username}"
+        return "Patient: (No User Associated)"
 
 class DoctorProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -40,7 +42,7 @@ class InsuranceProfile(models.Model):
 
 class HealthProfile(models.Model):
     patient = models.OneToOneField(PatientProfile, on_delete=models.CASCADE, related_name='health_profile')
-
+    patient_name = models.CharField(max_length=255, blank=True, null=True)  # Ensure blank and null are allowed
     dob = models.DateField(null=True, blank=True)
     gender = models.CharField(max_length=20, blank=True)
     blood_group = models.CharField(max_length=5, blank=True)

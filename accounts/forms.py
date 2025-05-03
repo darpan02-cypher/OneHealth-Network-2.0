@@ -43,10 +43,11 @@ class LoginForm(forms.Form):
 from django import forms
 from .models import HealthProfile
 
-class HealthProfileForm(forms.ModelForm): # This form is for the HealthProfile model
+class HealthProfileForm(forms.ModelForm):  # This form is for the HealthProfile model
     class Meta:
         model = HealthProfile
         fields = [
+            'patient_name',  # Allow users to input a custom name
             'dob', 'gender', 'blood_group', 'height', 'weight',
             'allergies', 'chronic_conditions',
             'emergency_name', 'emergency_phone',
@@ -80,4 +81,3 @@ class ScheduleAppointmentForm(forms.Form):
     appointment_time = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}), label="Appointment Time")
     reason = forms.CharField(widget=forms.Textarea, required=False, label="Reason for Appointment")
     notes = forms.CharField(widget=forms.Textarea, required=False, label="Additional Notes")
-    
