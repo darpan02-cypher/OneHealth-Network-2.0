@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Check Appointments</h1>
+
+    <!-- Present Appointments -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-clock me-2"></i>Today's Appointments</h5>
+        </div>
+        <div class="card-body">
+            {% if present_appointments %}
+                <ul class="list-group">
+                    {% for appointment in present_appointments %}
+                        <li class="list-group-item">
+                            <strong>Patient:</strong> {{ appointment.patient.user.username }}<br>
+                            <strong>Time:</strong> {{ appointment.appointment_date|time:"g:i A" }}<br>
+                            <strong>Reason:</strong> {{ appointment.reason }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No appointments for today.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Upcoming Appointments -->
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Upcoming Appointments</h5>
+        </div>
+        <div class="card-body">
+            {% if upcoming_appointments %}
+                <ul class="list-group">
+                    {% for appointment in upcoming_appointments %}
+                        <li class="list-group-item">
+                            <strong>Patient:</strong> {{ appointment.patient.user.username }}<br>
+                            <strong>Date:</strong> {{ appointment.appointment_date|date:"M d, Y" }}<br>
+                            <strong>Time:</strong> {{ appointment.appointment_date|time:"g:i A" }}<br>
+                            <strong>Reason:</strong> {{ appointment.reason }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No upcoming appointments.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Past Appointments -->
+    <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0"><i class="fas fa-history me-2"></i>Past Appointments</h5>
+        </div>
+        <div class="card-body">
+            {% if past_appointments %}
+                <ul class="list-group">
+                    {% for appointment in past_appointments %}
+                        <li class="list-group-item">
+                            <strong>Patient:</strong> {{ appointment.patient.user.username }}<br>
+                            <strong>Date:</strong> {{ appointment.appointment_date|date:"M d, Y" }}<br>
+                            <strong>Time:</strong> {{ appointment.appointment_date|time:"g:i A" }}<br>
+                            <strong>Reason:</strong> {{ appointment.reason }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No past appointments.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

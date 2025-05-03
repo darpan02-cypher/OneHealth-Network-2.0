@@ -22,7 +22,9 @@ from .models import HealthProfile, PatientProfile
 from django.contrib.auth.decorators import login_required
 from .models import InsuranceClaim
 from .forms import ScheduleAppointmentForm  # Correct import statement
+from .models import ScheduleAppointment  # Import the ScheduleAppointment model
 
+from datetime import datetime, timedelta  # Import datetime and timedelta
 
 # Signup Views
 def patient_signup(request):
@@ -288,6 +290,31 @@ def claim_insurance(request):
         )
         return HttpResponse("Insurance claim submitted successfully!")
     return render(request, 'patient/claim_insurance_form.html')
+
+# Check Appointments
+@login_required
+def check_appointments(request):
+    # Fetch appointments for the logged-in user (assuming they are a doctor)
+    now = datetime.now()
+    today_start = datetime.combine(now.date(), datetime.min.time())
+    today_end = datetime.combine(now.date(), datetime.max.time())
+
+    # Filter appointments manually
+    upcoming_appointments = ScheduleAppointment.objects.filter(
+        doctor__user=request.user, appointment_date__gt=now
+    ).order_by('appointment_date')
+    past_appointments = ScheduleAppointment.objects.filter(
+        doctor__user=request.user, appointment_date__lt=today_start
+    ).order_by('-appointment_date')
+    present_appointments = ScheduleAppointment.objects.filter(
+        doctor__user=request.user, appointment_date__gte=today_start, appointment_date__lte=today_end
+    ).order_by('appointment_date')
+
+    return render(request, 'doctor/check_appointments.html', {
+        'upcoming_appointments': upcoming_appointments,
+        'past_appointments': past_appointments,
+        'present_appointments': present_appointments,
+    })
 
 
 
