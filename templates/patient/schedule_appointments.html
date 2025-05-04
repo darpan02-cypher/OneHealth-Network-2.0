@@ -21,13 +21,12 @@
                         <div class="row g-3">
                             {# Doctor Field #}
                             <div class="col-md-6">
-                                <label for="{{ form.doctor.doctor_name }}" class="form-label">
-                                    {{ form.doctor.label }}
+                                <label for="{{ form.doctor_name.id_for_label }}" class="form-label">
+                                    {{ form.doctor_name.label }}
                                 </label>
-                                {# Add widget_tweaks class if needed: {{ form.doctor|add_class:"form-select" }} #}
-                                {{ form.doctor|add_class:"form-control" }} {# Assuming it's a ModelChoiceField now, might need form-select #}
-                                {% if form.doctor.errors %}
-                                <div class="text-danger small mt-1">{{ form.doctor.errors|join:", " }}</div>
+                                {{ form.doctor_name|add_class:"form-control" }}
+                                {% if form.doctor_name.errors %}
+                                <div class="text-danger small mt-1">{{ form.doctor_name.errors|join:", " }}</div>
                                 {% endif %}
                             </div>
 

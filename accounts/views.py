@@ -2,9 +2,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from .forms import (
-    PatientSignupForm, DoctorSignupForm, InsuranceSignupForm, LoginForm
+    PatientSignupForm, DoctorSignupForm, InsuranceSignupForm, LoginForm, PrescriptionForm
 )
-from .models import PatientProfile, DoctorProfile, InsuranceProfile
+from .models import PatientProfile, DoctorProfile, InsuranceProfile, Prescription
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -269,19 +269,13 @@ def schedule_appointment(request):
                 appointment_data['appointment_date'], appointment_data['appointment_time']
             )
 
-            # Manually handle the database operation
-            try:
-                appointment = ScheduleAppointment(
-                    patient=patient_profile,
-                    doctor=DoctorProfile.objects.first(),  # Replace with actual doctor logic
-                    appointment_date=appointment_date,
-                    reason=appointment_data['reason']
-                )
-                appointment.save()  # Save the appointment to the database
-            except Exception as e:
-                return render(request, 'error.html', {
-                    'message': f"An error occurred: {str(e)}"
-                })
+            # Save the appointment with the selected doctor's name
+            ScheduleAppointment.objects.create(
+                patient=patient_profile,
+                doctor_name=appointment_data['doctor_name'],
+                appointment_date=appointment_date,
+                reason=appointment_data['reason']
+            )
 
             return render(request, 'patient/schedule_appointments.html', {
                 'form': form,
@@ -364,6 +358,26 @@ def check_appointments(request):
         'upcoming_appointments': upcoming_appointments,
         'past_appointments': past_appointments,
         'present_appointments': present_appointments,
+    })
+
+@login_required
+def manage_prescriptions(request):
+    patient_profile = PatientProfile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        form = PrescriptionForm(request.POST, request.FILES)
+        if form.is_valid():
+            prescription = form.save(commit=False)
+            prescription.patient = patient_profile
+            prescription.save()
+            return redirect('manage_prescriptions')
+    else:
+        form = PrescriptionForm()
+
+    prescriptions = Prescription.objects.filter(patient=patient_profile).order_by('-uploaded_at')  # Ensure this is ordered by uploaded_at
+    return render(request, 'patient/manage_prescriptions.html', {
+        'form': form,
+        'prescriptions': prescriptions,
     })
 
 

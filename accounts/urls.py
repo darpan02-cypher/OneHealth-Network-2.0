@@ -40,4 +40,7 @@ urlpatterns = [
     
     # Claim Insurance Form
     path('claim-insurance/', views.claim_insurance, name='claim_insurance'),
+
+    # Manage Prescriptions
+    path('dashboard/patient/manage_prescriptions/', views.manage_prescriptions, name='manage_prescriptions'),
 ]

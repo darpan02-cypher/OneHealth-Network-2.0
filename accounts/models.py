@@ -2,6 +2,7 @@
 from djongo.models import ObjectIdField
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 
 class User(AbstractUser):
     id = ObjectIdField(primary_key=True)  # Use ObjectIdField for MongoDB compatibility
@@ -69,12 +70,12 @@ class HealthProfile(models.Model):
     
 class ScheduleAppointment(models.Model):
     patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
-    doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE, related_name='appointments')
+    doctor_name = models.CharField(max_length=255)  # Store the doctor's name as a string
     appointment_date = models.DateTimeField()
     reason = models.TextField()
 
     def __str__(self):
-        return f"Appointment for {self.patient.user.username} with {self.doctor.user.username} on {self.appointment_date}"
+        return f"Appointment for {self.patient.user.username} with {self.doctor_name} on {self.appointment_date}"
 
 class InsuranceClaim(models.Model):
     policy_number = models.CharField(max_length=50)
@@ -84,5 +85,16 @@ class InsuranceClaim(models.Model):
 
     def __str__(self):
         return f"Claim {self.policy_number} - {self.claim_amount}"
+
+class Prescription(models.Model):
+    patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, related_name='prescriptions')
+    doctor_name = models.CharField(max_length=255)  # Name of the doctor
+    reason = models.TextField()  # Reason for the prescription
+    file = models.FileField(upload_to='prescriptions/')  # File upload (photo, PDF, etc.)
+    #uploaded_at = models.DateTimeField(auto_now_add=True)  # Date uploaded
+    uploaded_at = models.DateTimeField(auto_now_add=True)  # Date uploaded
+
+    def __str__(self):
+        return f"Prescription for {self.patient.user.username} by {self.doctor_name} on {self.uploaded_at}"
 
 

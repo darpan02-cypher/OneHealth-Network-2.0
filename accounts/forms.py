@@ -1,4 +1,5 @@
 from django import forms
+from .models import HealthProfile, Prescription  # Import the Prescription model
 
 class SignupForm(forms.Form):
     name = forms.CharField()
@@ -40,8 +41,6 @@ class LoginForm(forms.Form):
 
 #health_profile_form.py
 # accounts/forms.py
-from django import forms
-from .models import HealthProfile
 
 class HealthProfileForm(forms.ModelForm):  # This form is for the HealthProfile model
     class Meta:
@@ -74,10 +73,25 @@ class HealthProfileForm(forms.ModelForm):  # This form is for the HealthProfile 
            
 #schedule_appointment_form.py
 class ScheduleAppointmentForm(forms.Form):
-    #doctor = forms.ModelChoiceField(queryset=DoctorProfile.objects.all(), label="Select Doctor")
-        
-    doctor = forms.CharField(max_length=150, label="Select Doctor") # need to change this 
+    # Dynamically populate the doctor choices
+    DOCTOR_CHOICES = [
+        ('Dr. John Smith', 'Dr. John Smith'),
+        ('Dr. Jane Doe', 'Dr. Jane Doe'),
+        ('Dr. Alice Johnson', 'Dr. Alice Johnson'),
+        ('Dr. Robert Brown', 'Dr. Robert Brown'),
+    ]
+
+    doctor_name = forms.ChoiceField(choices=DOCTOR_CHOICES, label="Select Doctor")  # Ensure the field name is 'doctor_name'
     appointment_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label="Appointment Date")
     appointment_time = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}), label="Appointment Time")
     reason = forms.CharField(widget=forms.Textarea, required=False, label="Reason for Appointment")
     notes = forms.CharField(widget=forms.Textarea, required=False, label="Additional Notes")
+
+
+class PrescriptionForm(forms.ModelForm):
+    class Meta:
+        model = Prescription
+        fields = ['doctor_name', 'reason', 'file']
+        widgets = {
+            'reason': forms.Textarea(attrs={'rows': 3}),
+        }

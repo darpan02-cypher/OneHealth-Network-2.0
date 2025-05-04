@@ -25,7 +25,7 @@
                     <tbody>
                         {% for appointment in upcoming_appointments %}
                         <tr>
-                            <td>{{ appointment.doctor_id}}</td>
+                            <td>{{ appointment.doctor_name }}</td>
                             <td>{{ appointment.appointment_date|date:"M d, Y" }}</td>
                             <td>{{ appointment.appointment_date|time:"g:i A" }}</td>
                             <td>{{ appointment.reason }}</td>
@@ -60,7 +60,7 @@
                     <tbody>
                         {% for appointment in past_appointments %}
                         <tr>
-                            <td>{{ appointment.doctor_id}}</td>
+                            <td>{{ appointment.doctor_name }}</td>
                             <td>{{ appointment.appointment_date|date:"M d, Y" }}</td>
                             <td>{{ appointment.appointment_date|time:"g:i A" }}</td>
                             <td>{{ appointment.reason }}</td>
