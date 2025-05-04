@@ -293,8 +293,27 @@ def schedule_appointment(request):
     return render(request, 'patient/schedule_appointments.html', {'form': form})
 
 #static appointment page
+@login_required
 def static_appointment_page(request):
-    return render(request, 'patient/static_appointment_page.html')
+    # Fetch the logged-in patient's profile
+    patient_profile = PatientProfile.objects.get(user=request.user)
+
+    # Get the current date and time
+    now = datetime.now()
+
+    # Categorize appointments into past and upcoming
+    past_appointments = ScheduleAppointment.objects.filter(
+        patient=patient_profile, appointment_date__lt=now
+    ).order_by('-appointment_date')  # Most recent past appointments first
+    upcoming_appointments = ScheduleAppointment.objects.filter(
+        patient=patient_profile, appointment_date__gte=now
+    ).order_by('appointment_date')  # Closest upcoming appointments first
+
+    # Pass the categorized appointments to the template
+    return render(request, 'patient/static_appointment_page.html', {
+        'past_appointments': past_appointments,
+        'upcoming_appointments': upcoming_appointments,
+    })
 
 # Claim Insurance
 def claim_insurance(request):
@@ -316,22 +335,31 @@ def claim_insurance(request):
 # Check Appointments
 @login_required
 def check_appointments(request):
-    # Fetch appointments for the logged-in user (assuming they are a doctor)
+    # Fetch the doctor profile for doctor_id=1
+    try:
+        doctor_profile = DoctorProfile.objects.get(id=1)
+    except DoctorProfile.DoesNotExist:
+        return render(request, 'error.html', {
+            'message': 'Doctor with ID 1 does not exist.'
+        })
+
+    # Get the current date and time
     now = datetime.now()
     today_start = datetime.combine(now.date(), datetime.min.time())
     today_end = datetime.combine(now.date(), datetime.max.time())
 
-    # Filter appointments manually
+    # Categorize appointments
     upcoming_appointments = ScheduleAppointment.objects.filter(
-        doctor__user=request.user, appointment_date__gt=now
+        doctor=doctor_profile, appointment_date__gt=now
     ).order_by('appointment_date')
     past_appointments = ScheduleAppointment.objects.filter(
-        doctor__user=request.user, appointment_date__lt=today_start
+        doctor=doctor_profile, appointment_date__lt=today_start
     ).order_by('-appointment_date')
     present_appointments = ScheduleAppointment.objects.filter(
-        doctor__user=request.user, appointment_date__gte=today_start, appointment_date__lte=today_end
+        doctor=doctor_profile, appointment_date__gte=today_start, appointment_date__lte=today_end
     ).order_by('appointment_date')
 
+    # Pass categorized appointments to the template
     return render(request, 'doctor/check_appointments.html', {
         'upcoming_appointments': upcoming_appointments,
         'past_appointments': past_appointments,
