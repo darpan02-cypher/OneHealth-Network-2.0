@@ -259,15 +259,37 @@ def view_patient_health_profile(request, patient_id):
 #schedule appointment
 @login_required
 def schedule_appointment(request):
+    patient_profile = PatientProfile.objects.get(user=request.user)
+
     if request.method == 'POST':
         form = ScheduleAppointmentForm(request.POST)
         if form.is_valid():
-            appointment = form.save(commit=False)
-            appointment.patient = PatientProfile.objects.get(user=request.user)
-            appointment.save()
-            return redirect('patient_dashboard')
+            appointment_data = form.cleaned_data
+            appointment_date = datetime.combine(
+                appointment_data['appointment_date'], appointment_data['appointment_time']
+            )
+
+            # Manually handle the database operation
+            try:
+                appointment = ScheduleAppointment(
+                    patient=patient_profile,
+                    doctor=DoctorProfile.objects.first(),  # Replace with actual doctor logic
+                    appointment_date=appointment_date,
+                    reason=appointment_data['reason']
+                )
+                appointment.save()  # Save the appointment to the database
+            except Exception as e:
+                return render(request, 'error.html', {
+                    'message': f"An error occurred: {str(e)}"
+                })
+
+            return render(request, 'patient/schedule_appointments.html', {
+                'form': form,
+                'message': 'Appointment scheduled successfully.',
+            })
     else:
         form = ScheduleAppointmentForm()
+
     return render(request, 'patient/schedule_appointments.html', {'form': form})
 
 #static appointment page

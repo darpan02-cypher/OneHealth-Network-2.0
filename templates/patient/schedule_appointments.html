@@ -11,6 +11,11 @@
                     <h4 class="mb-0"><i class="fas fa-calendar-plus me-2"></i>Schedule Appointment</h4>
                 </div>
                 <div class="card-body">
+                    {% if message %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endif %}
                     <form method="post" novalidate>
                         {% csrf_token %}
                         <div class="row g-3">

@@ -1,5 +1,6 @@
 from django import forms
 
+
 class SignupForm(forms.Form):
     name = forms.CharField()
     email = forms.EmailField()
@@ -73,7 +74,7 @@ class HealthProfileForm(forms.ModelForm):  # This form is for the HealthProfile 
         
            
 #schedule_appointment_form.py
-class ScheduleAppointmentForm(forms.Form):
+class ScheduleAppointmentForm(forms.ModelForm):
     #doctor = forms.ModelChoiceField(queryset=DoctorProfile.objects.all(), label="Select Doctor")
         
     doctor = forms.CharField(max_length=150, label="Select Doctor") # need to change this 
@@ -81,3 +82,7 @@ class ScheduleAppointmentForm(forms.Form):
     appointment_time = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}), label="Appointment Time")
     reason = forms.CharField(widget=forms.Textarea, required=False, label="Reason for Appointment")
     notes = forms.CharField(widget=forms.Textarea, required=False, label="Additional Notes")
+
+    class Meta:
+        model = HealthProfile  # Replace with the correct model, e.g., Appointment
+        fields = ['doctor', 'appointment_date', 'appointment_time', 'reason', 'notes']
